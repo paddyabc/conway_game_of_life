@@ -1,6 +1,7 @@
 "use strict";
 
 var _ = require('lodash');
+var SocketService = require('./service/socket-service');
 
 let _singleton = Symbol();
 let _reproduceCheck = Symbol();
@@ -85,7 +86,7 @@ class GameBoard {
 
             var newWorld = _.cloneDeep(self.data);
             var newSelectedPoint = {};
-            let neighbourTest = new Array(); 
+            let neighbourTest = {}; 
 
             //Check all live cell and find the potential neighbours for reproduce test
             _.each(self.selectedPoint, function(color, key){
@@ -103,7 +104,7 @@ class GameBoard {
 
                 var neighbours = self.getAllNeighbours(x,y);
                 _.each(neighbours, function(pos){
-                    neighbourTest[pos.x + '_' + pos.y] = pos
+                    neighbourTest[pos.x + '_' + pos.y] = pos;
                 });
             });
 
@@ -232,6 +233,8 @@ class GameBoard {
             self.data[x][y].isDead = false;
             self.data[x][y].cellStyle.fill = colorTemplate({'red':color.red, 'green':color.green, 'blue':color.blue});
             self.selectedPoint[x+'_'+y] = color;
+
+            //SocketService.getInstance().publishMessage("updateWorld", self.data);
 
             return;
         });

@@ -29,6 +29,7 @@ class SocketService {
 
         scServer.on('connection', function(socket){
            
+            let self = this;
             let connectMessage = {"data": gameBoard.getGameData(), "color": gameBoard.pickColor()};
             socket.emit('init',connectMessage);
             
