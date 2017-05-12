@@ -1,0 +1,22 @@
+<html>
+<head>
+    <script data-main="/js/app" 
+      data-require="require.js@*" 
+      data-semver="2.3.3" 
+      src="./js/bower_components/requirejs/require.js"></script>
+
+</head>
+<body>
+<div id="gameBoard" >
+    <svg width="1050px" height="525px">
+        <g class="row" v-for="(rows, rowIndex) in board">
+            <!--<rect class="square" v-for="cell in rows" v-bind:x="cell.x" v-bind:y="cell.y" v-bind:width="cell.width" v-bind:height="cell.height" v-bind:style="cell.cellStyle"></rect>-->
+            <game-cell v-for="(cell, cellIndex) in rows" v-bind:x="cell.x" v-bind:y="cell.y" v-bind:width="cell.width" v-bind:height="cell.height" v-bind:style="cell.cellStyle" v-bind:row-index="rowIndex" v-bind:cell-index="cellIndex"></game-cell>
+        </g>
+
+    </svg>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "conway-game",
+  "description": "demonstration on conway's game of life",
+  "version": "0.0.1",
+  "author": {
+    "name": "paddy"
+  },
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "express": "4.15.2",
+    "lodash": "^4.17.4",
+    "sc-cluster-broker-client": "1.x.x",
+    "serve-static": "1.8.0",
+    "socketcluster": "5.x.x",
+    "socketcluster-client": "5.x.x"
+  }
+}
