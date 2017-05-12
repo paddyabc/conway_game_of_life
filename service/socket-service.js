@@ -34,12 +34,15 @@ class SocketService {
             
             socket.on('newLiveCell', function(data, response){
 
-                gameBoard.updateCell(data.x,data.y,data.color).then(function(){
-                     response(null, {"code":0, "message": "success"});
-                }).catch(function(err){
-                    console.log(err);
-                    var message = {"code": -1, "message": err.message, data: data};
-                    response(-1, message);
+                gameBoard.updateCell(data.x,data.y,data.color).then(function(error){
+
+                    if(error){
+                        var message = {"code": -1, "message": error.message, data: data};
+                        response(-1, message);
+                    }else {
+                        response(null, {"code":0, "message": "success"});
+                    }
+
                 });
                 
             });

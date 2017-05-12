@@ -91,14 +91,14 @@ class GameBoard {
             _.each(self.selectedPoint, function(color, key){
 
                 let position = key.split("_");
-                let x = position[0];
-                let y = position[1];
+                let x = parseInt(position[0]);
+                let y = parseInt(position[1]);
 
                 if (self[_liveCheck](x,y)){
                     newSelectedPoint[x + '_' + y] = color;
                 } else {
                     newWorld[x][y].isDead = true;
-                    newWorld[pos.x][pos.y].cellStyle.fill = "#fff";
+                    newWorld[x][y].cellStyle.fill = "#fff";
                 }
 
                 var neighbours = self.getAllNeighbours(x,y);
@@ -216,22 +216,24 @@ class GameBoard {
         this.updatePromise = this.updatePromise.then(function(){
 
             if(!_.isNumber(x) || x < 0 || x >= boardHeight)
-                throw new Error("invalid position x");
+                return new Error("invalid position x");
 
             if(!_.isNumber(y) || y < 0 || y >= boardWidth)
-                throw new Error("invalid position y");
+                return new Error("invalid position y");
 
             if(!_.isObject(color) && !_.isNumber(color.red) && !_.isNumber(color.green)&& !_.isNumber(color.blue)){
-                throw new Error("invalid color object");
+                return new Error("invalid color object");
             }
 
             if(!self.data[x][y].isDead) {
-                throw new Error("Cell cannot be selected as it is a live cell");
+                return new Error("Cell cannot be selected as it is a live cell");
             }
             
             self.data[x][y].isDead = false;
             self.data[x][y].cellStyle.fill = colorTemplate({'red':color.red, 'green':color.green, 'blue':color.blue});
             self.selectedPoint[x+'_'+y] = color;
+
+            return;
         });
 
         return this.updatePromise;
