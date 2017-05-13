@@ -16,7 +16,7 @@ define(['lodash', '../service/sync-service'], (_, SyncService) => {
     const _patternBuilder = {};
     _patternBuilder[_pattern.NONE] = (x, y) => {
         return [ {"x":x, "y":y} ];
-    } 
+    }; 
     _patternBuilder[_pattern.BLOCK] = (x, y) => {
         return [ 
             {"x":x, "y":y},
@@ -24,7 +24,7 @@ define(['lodash', '../service/sync-service'], (_, SyncService) => {
             {"x":x + 1, "y":y},
             {"x":x + 1, "y":y + 1},
         ];
-    } 
+    }; 
     _patternBuilder[_pattern.BOAT] = (x, y) => {
         return [ 
             {"x":x, "y":y},
@@ -33,7 +33,7 @@ define(['lodash', '../service/sync-service'], (_, SyncService) => {
             {"x":x + 1, "y":y +2},
             {"x":x + 2, "y":y + 1},
         ];
-    } 
+    }; 
     _patternBuilder[_pattern.TOAD] = (x, y) => {
         return [ 
             {"x":x,"y":y+1},
@@ -43,14 +43,14 @@ define(['lodash', '../service/sync-service'], (_, SyncService) => {
             {"x":x+1,"y":y+1},
             {"x":x+1,"y":y+2}
         ];
-    } 
+    }; 
     _patternBuilder[_pattern.BLINKER] = (x, y) => {
         return [ 
             {"x":x,"y":y},
             {"x":x,"y":y + 1}, 
             {"x":x,"y":y + 2} 
         ];
-    } 
+    }; 
 
     class GameBoard {
 
@@ -87,7 +87,7 @@ define(['lodash', '../service/sync-service'], (_, SyncService) => {
                 _.each(row, (cell) => {
                     cell.isDead = true,
                     cell.cellStyle.fill = "#fff";
-                })
+                });
             });
         }
 
@@ -106,17 +106,20 @@ define(['lodash', '../service/sync-service'], (_, SyncService) => {
         paintPattern(x,y){
             
             let self = this;
-            console.log(this.selectedPattern);
             let patternArray = _patternBuilder[this.selectedPattern](x,y);
             let patternValidCheck = true;
 
             _.each(patternArray, (position) => {
                 let xpos = position.x;
                 let ypos = position.y;
-                if(xpos < 0)
+                if(xpos < 0 || xpos >= self.gamedata.length){
                     patternValidCheck = false;
-                if(ypos >= self.gamedata[0].length)
+                    return;
+                }
+                if(ypos < 0 || ypos >= self.gamedata[0].length){
                     patternValidCheck = false;
+                    return;
+                }
                 if(!self.gamedata[xpos][ypos].isDead)
                     patternValidCheck = false;
             });

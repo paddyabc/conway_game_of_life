@@ -187,7 +187,7 @@ class GameBoard {
                 neighbours.push({"x": x -1, "y": y-1});
             }
 
-            if(y + 1 >= 0){
+            if(y + 1 < boardWidth){
                 neighbours.push({"x": x -1, "y": y+1});
             }
         }
@@ -199,7 +199,7 @@ class GameBoard {
                 neighbours.push({"x": x + 1, "y": y-1});
             }
 
-            if(y + 1 >= 0){
+            if(y + 1 < boardWidth){
                 neighbours.push({"x": x + 1, "y": y+1});
             }
         }
@@ -229,18 +229,24 @@ class GameBoard {
                 let y = position.y;
                 let color = position.color;
 
-                if(!_.isNumber(x) || x < 0 || x >= boardHeight)
+                if(!_.isNumber(x) || x < 0 || x >= boardHeight) {
                     pointChecker = false;
+                    return;
+                }
 
-                if(!_.isNumber(y) || y < 0 || y >= boardWidth)
+                if(!_.isNumber(y) || y < 0 || y >= boardWidth){
                     pointChecker = false;
+                    return;
+                }
 
                 if(!_.isObject(color) && !_.isNumber(color.red) && !_.isNumber(color.green)&& !_.isNumber(color.blue)){
                     pointChecker = false;
+                    return;
                 }
 
                 if(!self.data[x][y].isDead) {
                     pointChecker = false;
+                    return;
                 }
             });
 
