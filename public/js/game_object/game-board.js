@@ -9,9 +9,48 @@ define(['lodash', '../service/sync-service'], (_, SyncService) => {
         NONE: Symbol("NONE"),
         BLOCK: Symbol("BLOCK"),
         BOAT: Symbol("BOAT"),
-        TUB: Symbol("TUB"),
+        TOAD: Symbol("TOAD"),
         BLINKER: Symbol("BLINKER")
     };
+
+    const _patternBuilder = {};
+    _patternBuilder[_pattern.NONE] = (x, y) => {
+        return [ {"x":x, "y":y} ];
+    } 
+    _patternBuilder[_pattern.BLOCK] = (x, y) => {
+        return [ 
+            {"x":x, "y":y},
+            {"x":x, "y":y + 1},
+            {"x":x + 1, "y":y},
+            {"x":x + 1, "y":y + 1},
+        ];
+    } 
+    _patternBuilder[_pattern.BOAT] = (x, y) => {
+        return [ 
+            {"x":x, "y":y},
+            {"x":x, "y":y + 1}, 
+            {"x":x + 1, "y":y},
+            {"x":x + 1, "y":y +2},
+            {"x":x + 2, "y":y + 1},
+        ];
+    } 
+    _patternBuilder[_pattern.TOAD] = (x, y) => {
+        return [ 
+            {"x":x,"y":y+1},
+            {"x":x,"y":y+2},
+            {"x":x,"y":y+3},
+            {"x":x+1,"y":y},
+            {"x":x+1,"y":y+1},
+            {"x":x+1,"y":y+2}
+        ];
+    } 
+    _patternBuilder[_pattern.BLINKER] = (x, y) => {
+        return [ 
+            {"x":x,"y":y},
+            {"x":x,"y":y + 1}, 
+            {"x":x,"y":y + 2} 
+        ];
+    } 
 
     class GameBoard {
 
@@ -26,7 +65,7 @@ define(['lodash', '../service/sync-service'], (_, SyncService) => {
 
         }
 
-        setPattern(pattern) {
+        setSelectPattern(pattern) {
             this.selectedPattern = pattern;
         }
 
@@ -67,17 +106,48 @@ define(['lodash', '../service/sync-service'], (_, SyncService) => {
         paintPattern(x,y){
             
             let self = this;
+            console.log(this.selectedPattern);
+            let patternArray = _patternBuilder[this.selectedPattern](x,y);
+            let patternValidCheck = true;
 
-            if(this.gamedata[x][y].isDead) {
-                this.gamedata[x][y].isDead = false;
-                this.gamedata[x][y].cellStyle.fill = colorTemplate({'red':this.color.red, 'green':this.color.green, 'blue':this.color.blue});
+            _.each(patternArray, (position) => {
+                let xpos = position.x;
+                let ypos = position.y;
+                if(xpos < 0)
+                    patternValidCheck = false;
+                if(ypos >= self.gamedata[0].length)
+                    patternValidCheck = false;
+                if(!self.gamedata[xpos][ypos].isDead)
+                    patternValidCheck = false;
+            });
 
-                SyncService.getInstance().newLiveCell(x,y, this.color).catch((err)=>{
-                    console.error(err);
-                    self.gamedata[x][y].isDead = true;
-                    self.gamedata[x][y].cellStyle.fill ="#fff";
-                    alert('Cannot select the cell, please choose the other');
+            if(patternValidCheck){
+
+                let syncData = new Array();
+
+                _.each(patternArray, (position) => {
+
+                    let xpos = position.x;
+                    let ypos = position.y;
+                    let color = position.color;
+
+                    self.gamedata[xpos][ypos].isDead = false;
+                    self.gamedata[xpos][ypos].cellStyle.fill = colorTemplate({'red':self.color.red, 'green':self.color.green, 'blue':self.color.blue});
+
+                    syncData.push({"x":xpos,"y":ypos,color:self.color});
                 });
+
+                SyncService.getInstance().newLiveCell(syncData).catch((err)=>{
+                    console.error(err);
+                    _.each(patternArray, (position) => {
+                        let xpos = position.x;
+                        let ypos = position.y;
+                        self.gamedata[x][y].isDead = true;
+                        self.gamedata[x][y].cellStyle.fill ="#fff";
+                    });
+                    alert('Cannot select the cells, please choose the others');
+                });
+
             } else {
                 alert('The cell cannot be chosen!');
             }

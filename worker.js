@@ -15,7 +15,7 @@ module.exports.run = function(worker) {
     var socketService = SocketService.getInstance(scServer);
     socketService.init(scServer);
 
-    //Start Timer
+    //Timer
     var timerService = TimerService.getInstance();
     timerService.start();
 }

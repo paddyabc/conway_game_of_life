@@ -37,7 +37,7 @@ class SocketService {
             
             socket.on('newLiveCell', (data, response) => {
 
-                gameBoard.updateCell(data.x,data.y,data.color).then((error) =>{
+                gameBoard.updateCells(data).then((error) =>{
 
                     if(error){
                         let message = {"code": -1, "message": error.message, data: data};
@@ -46,7 +46,7 @@ class SocketService {
                         response(null, {"code":0, "message": "success"});
                     }
 
-                    self.publishMessage("updatePoints", [{"x":data.x, "y":data.y, "color":data.color}]);
+                    self.publishMessage("updatePoints", data);
                 });
                 
             });

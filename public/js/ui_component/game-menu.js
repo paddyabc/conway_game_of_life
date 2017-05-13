@@ -12,7 +12,7 @@ define(['vue','../game_object/game-board','lodash'], (Vue, GameBoard, _) => {
         template: `
         <div class="menu">
 	        <div class="menu-desc">Select Pattern:</div>
-	        <div class="pattern" v-for="(data,index) in menudata" v-bind:class="{active: data.isActive}" v-on:click="itemClick(index)" v-on:activate="data.click">
+	        <div class="pattern" v-for="(data,index) in menudata" v-bind:class="{active: data.isActive}" v-on:click="itemClick(index)" >
 	        	{{data.itemName}}
 	        </div>
         </div>
@@ -25,7 +25,7 @@ define(['vue','../game_object/game-board','lodash'], (Vue, GameBoard, _) => {
 	                	item.isActive = false;
 	                })
 	                this.menudata[index].isActive = true;
-	                this.$emit("activate");
+	                this.menudata[index].click();
 	            }
             }
         }

@@ -58,6 +58,7 @@ class GameBoard {
         let green = Math.round((Math.random() *255));
         let blue = Math.round((Math.random() *255));
 
+        //Prevent to generate the white color
         if(red >= 240 && green >= 240  && blue >= 240){
 
             return this.pickColor();
@@ -78,6 +79,7 @@ class GameBoard {
         return this.data;
     }
 
+    // This is used to calculate the the next state of the game
     nextState(){
 
         let self = this;
@@ -131,6 +133,7 @@ class GameBoard {
 
     }
 
+    //Check whether the cell can survive in the next state
     [_liveCheck](x,y){
         let neighbours = this.getAllNeighbours(x,y);
         let liveCount = 0;
@@ -150,6 +153,7 @@ class GameBoard {
         }
     }
 
+    //check whether the cell is reproduced in the next state
     [_reproduceCheck](x,y) {
 
         let neighbours = this.getAllNeighbours(x,y);
@@ -171,6 +175,7 @@ class GameBoard {
         
     }
 
+    //Get all the neighbours for a given point
     getAllNeighbours (x,y){
 
         var neighbours = new Array();
@@ -210,31 +215,50 @@ class GameBoard {
         return neighbours;
     }
 
-    updateCell(x,y,color){
+    //update cells data
+    updateCells(data){
 
         let self = this;
 
         this.updatePromise = this.updatePromise.then( () =>{
 
-            if(!_.isNumber(x) || x < 0 || x >= boardHeight)
-                return new Error("invalid position x");
+            let pointChecker = true;
 
-            if(!_.isNumber(y) || y < 0 || y >= boardWidth)
-                return new Error("invalid position y");
+            _.each (data, (position) => {
+                let x = position.x;
+                let y = position.y;
+                let color = position.color;
 
-            if(!_.isObject(color) && !_.isNumber(color.red) && !_.isNumber(color.green)&& !_.isNumber(color.blue)){
-                return new Error("invalid color object");
+                if(!_.isNumber(x) || x < 0 || x >= boardHeight)
+                    pointChecker = false;
+
+                if(!_.isNumber(y) || y < 0 || y >= boardWidth)
+                    pointChecker = false;
+
+                if(!_.isObject(color) && !_.isNumber(color.red) && !_.isNumber(color.green)&& !_.isNumber(color.blue)){
+                    pointChecker = false;
+                }
+
+                if(!self.data[x][y].isDead) {
+                    pointChecker = false;
+                }
+            });
+
+            if (pointChecker){
+                _.each(data, (position) => {
+                    let x = position.x;
+                    let y = position.y;
+                    let color = position.color;
+
+                    self.data[x][y].isDead = false;
+                    self.data[x][y].cellStyle.fill = colorTemplate({'red':color.red, 'green':color.green, 'blue':color.blue});
+                    self.selectedPoint[x+'_'+y] = color;
+
+                });
+            } else {
+                return new Error("Invalid Selected Cells")
             }
-
-            if(!self.data[x][y].isDead) {
-                return new Error("Cell cannot be selected as it is a live cell");
-            }
-            
-            self.data[x][y].isDead = false;
-            self.data[x][y].cellStyle.fill = colorTemplate({'red':color.red, 'green':color.green, 'blue':color.blue});
-            self.selectedPoint[x+'_'+y] = color;
-
-
+  
             return;
         });
 

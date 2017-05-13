@@ -34,12 +34,12 @@ define(['socketcluster', 'promise'], (SC, Promise) => {
             }
         }
         
-        newLiveCell (x,y,color){
+        newLiveCell (updateData){
 
             let self = this;
 
             return new Promise((resolve, reject) => {
-                 self.socket.emit('newLiveCell',{'x':x, 'y':y, 'color': color}, (error) => {
+                 self.socket.emit('newLiveCell',updateData, (error) => {
 
                     if(error){
                         reject (error);

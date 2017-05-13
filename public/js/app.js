@@ -38,35 +38,35 @@ require([
 
       {
         "itemName": "None", 
-        "itemClick": function(){
+        "click": function(){
           GameBoard.getInstance().setSelectPattern(GameBoard.PATTERN.NONE);
         }, 
         "isActive": true
       },
       {
         "itemName": "Block", 
-        "itemClick": function(){
+        "click": function(){
           GameBoard.getInstance().setSelectPattern(GameBoard.PATTERN.BLOCK);
         }, 
         "isActive": false
       },
       {
         "itemName": "Boat", 
-        "itemClick": function(){
+        "click": function(){
           GameBoard.getInstance().setSelectPattern(GameBoard.PATTERN.BOAT);
         }, 
         "isActive": false
       },
       {
-        "itemName": "Tub", 
-        "itemClick": function(){
-          GameBoard.getInstance().setSelectPattern(GameBoard.PATTERN.TUB);
+        "itemName": "TAOD", 
+        "click": function(){
+          GameBoard.getInstance().setSelectPattern(GameBoard.PATTERN.TOAD);
         }, 
         "isActive": false
       },
       {
         "itemName": "Blinker", 
-        "itemClick": function(){
+        "click": function(){
           GameBoard.getInstance().setSelectPattern(GameBoard.PATTERN.BLINKER);
         }, 
         "isActive": false
