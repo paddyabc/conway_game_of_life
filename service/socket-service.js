@@ -1,4 +1,5 @@
 "use strict";
+
 let _singleton = Symbol();
 var GameBoard = require('../game-board');
 
@@ -17,7 +18,7 @@ class SocketService {
         let self = this;
 
         //prevent the malicious client use the preserved publish channel
-        scServer.addMiddleware(scServer.MIDDLEWARE_PUBLISH_IN, function (req, next) {
+        scServer.addMiddleware(scServer.MIDDLEWARE_PUBLISH_IN, (req, next) => {
             
             if (req.channel.indexOf('external/') == 0) {
                 next();
@@ -28,15 +29,15 @@ class SocketService {
             }
         });
 
-        scServer.on('connection', function(socket){
+        scServer.on('connection', (socket) => {
            
             
             let connectMessage = {"data": gameBoard.getGameData(), "color": gameBoard.pickColor()};
             socket.emit('init',connectMessage);
             
-            socket.on('newLiveCell', function(data, response){
+            socket.on('newLiveCell', (data, response) => {
 
-                gameBoard.updateCell(data.x,data.y,data.color).then(function(error){
+                gameBoard.updateCell(data.x,data.y,data.color).then((error) =>{
 
                     if(error){
                         let message = {"code": -1, "message": error.message, data: data};

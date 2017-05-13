@@ -25,25 +25,69 @@ require.config({
 
 });
 
-
 require([
     'vue',
     'lodash',
     'js/ui_component/game-cell',
+    'js/ui_component/game-menu',
     'js/game_object/game-board',
     'js/service/sync-service'
-], function(Vue, _, GameCell, GameBoard, SyncService){
+], function(Vue, _, GameCell, GameMenu, GameBoard, SyncService){
+
+    var menu = [
+
+      {
+        "itemName": "None", 
+        "itemClick": function(){
+          GameBoard.getInstance().setSelectPattern(GameBoard.PATTERN.NONE);
+        }, 
+        "isActive": true
+      },
+      {
+        "itemName": "Block", 
+        "itemClick": function(){
+          GameBoard.getInstance().setSelectPattern(GameBoard.PATTERN.BLOCK);
+        }, 
+        "isActive": false
+      },
+      {
+        "itemName": "Boat", 
+        "itemClick": function(){
+          GameBoard.getInstance().setSelectPattern(GameBoard.PATTERN.BOAT);
+        }, 
+        "isActive": false
+      },
+      {
+        "itemName": "Tub", 
+        "itemClick": function(){
+          GameBoard.getInstance().setSelectPattern(GameBoard.PATTERN.TUB);
+        }, 
+        "isActive": false
+      },
+      {
+        "itemName": "Blinker", 
+        "itemClick": function(){
+          GameBoard.getInstance().setSelectPattern(GameBoard.PATTERN.BLINKER);
+        }, 
+        "isActive": false
+      }
+
+    ];
+
+    var gameBoard = new Vue({
+      el: '#gameBoard',
+      components: ['game-cell','game-menu'],
+      data: function() {
+        return {
+          board: GameBoard.getInstance().getBoardData(),
+          menudata: menu
+        };
+      }
+    });
 
     SyncService.getInstance().connect().then(function(gameData){
-      var board = GameBoard.getInstance(gameData.data, gameData.color);
 
-      var gameBoard = new Vue({
-        el: '#gameBoard',
-        components: ['game-cell'],
-        data: {
-          board: GameBoard.getInstance().getBoardData()
-        }
-      });
+      GameBoard.getInstance().init(gameData.data, gameData.color);
 
       SyncService.getInstance().subscribe("updateWorld", function(data){
         GameBoard.getInstance().updateWorld(data);
@@ -53,7 +97,8 @@ require([
         _.each(data, function(cell){
           GameBoard.getInstance().paintPoint(cell.x,cell.y,cell.color);
         });
-      })
+      });
+
     });
 
 });

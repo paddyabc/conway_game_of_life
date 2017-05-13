@@ -82,14 +82,14 @@ class GameBoard {
 
         let self = this;
 
-        this.updatePromise = this.updatePromise.then(function(){
+        this.updatePromise = this.updatePromise.then( () => {
 
             var newWorld = _.cloneDeep(self.data);
             var newSelectedPoint = {};
             let neighbourTest = {}; 
 
             //Check all live cell and find the potential neighbours for reproduce test
-            _.each(self.selectedPoint, function(color, key){
+            _.each(self.selectedPoint, (color, key) => {
 
                 let position = key.split("_");
                 let x = parseInt(position[0]);
@@ -103,20 +103,20 @@ class GameBoard {
                 }
 
                 var neighbours = self.getAllNeighbours(x,y);
-                _.each(neighbours, function(pos){
+                _.each(neighbours, (pos) => {
                     neighbourTest[pos.x + '_' + pos.y] = pos;
                 });
             });
 
             //reproduce test
-            _.each(neighbourTest, function(pos){
+            _.each(neighbourTest, (pos) => {
 
                 var check = self[_reproduceCheck](pos.x, pos.y);
                 if(check){
                     newWorld[pos.x][pos.y].isDead = false;
-                    let red = _.meanBy(check, function(color){return color.red});
-                    let green = _.meanBy(check, function(color){return color.green});
-                    let blue = _.meanBy(check, function(color){return color.blue});
+                    let red = _.meanBy(check, (color) => {return color.red});
+                    let green = _.meanBy(check, (color) => {return color.green});
+                    let blue = _.meanBy(check, (color) => {return color.blue});
                     newWorld[pos.x][pos.y].cellStyle.fill = colorTemplate({'red': red, 'green': green, 'blue': blue});
                     newSelectedPoint[pos.x + '_' + pos.y] = {"red":red, "green": green, "blue": blue};
                 }
@@ -136,7 +136,7 @@ class GameBoard {
         let liveCount = 0;
         let self = this;
 
-        _.each(neighbours, function(pos){
+        _.each(neighbours, (pos) => {
             let testCell = self.data[pos.x][pos.y];
             if(!testCell.isDead){
                 liveCount++;
@@ -156,7 +156,7 @@ class GameBoard {
         let liveCellColors = new Array();
         let self = this;
 
-        _.each(neighbours, function(pos){
+        _.each(neighbours, (pos) => {
             let testCell = self.data[pos.x][pos.y];
             if(!testCell.isDead){
                 liveCellColors.push(self.selectedPoint[pos.x + '_' + pos.y]);
@@ -214,7 +214,7 @@ class GameBoard {
 
         let self = this;
 
-        this.updatePromise = this.updatePromise.then(function(){
+        this.updatePromise = this.updatePromise.then( () =>{
 
             if(!_.isNumber(x) || x < 0 || x >= boardHeight)
                 return new Error("invalid position x");

@@ -1,3 +1,5 @@
+"use strict";
+
 var HttpService = require('./service/http-service');
 var SocketService = require('./service/socket-service');
 var TimerService = require('./service/timer-service');

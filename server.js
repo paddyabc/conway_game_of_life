@@ -1,3 +1,5 @@
+"use strict";
+
 var SocketCluster = require('socketcluster').SocketCluster;
 
 var socketCluster = new SocketCluster({

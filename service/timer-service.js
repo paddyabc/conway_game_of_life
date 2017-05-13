@@ -1,3 +1,5 @@
+"use strict";
+
 let _singleton = Symbol();
 
 var GameBoard = require('../game-board');
@@ -14,9 +16,9 @@ class TimerService {
     start (){
         if(!this.isStart){
             this.isStart = true;
-            this.timer = setInterval(function(){
+            this.timer = setInterval( () => {
 
-                GameBoard.getInstance().nextState().then(function(){
+                GameBoard.getInstance().nextState().then( () =>{
                     SocketService.getInstance().publishMessage("updateWorld", GameBoard.getInstance().getGameData());
                 });
 

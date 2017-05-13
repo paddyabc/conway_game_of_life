@@ -1,6 +1,6 @@
 "use strict";
 
-define(['socketcluster', 'promise'], function(SC, Promise){
+define(['socketcluster', 'promise'], (SC, Promise) => {
 
     let _singleton = Symbol();
     class SyncService{
@@ -17,10 +17,10 @@ define(['socketcluster', 'promise'], function(SC, Promise){
             let options = {
                 port: this.port
             };
-            var promise = new Promise(function(resolve){
+            var promise = new Promise((resolve) => {
                  
                 self.socket = SC.connect(options);
-                self.socket.on('init', function(data){
+                self.socket.on('init', (data) =>{
                     resolve(data);
                 });
             });
@@ -38,8 +38,8 @@ define(['socketcluster', 'promise'], function(SC, Promise){
 
             let self = this;
 
-            return new Promise(function (resolve, reject){
-                 self.socket.emit('newLiveCell',{'x':x, 'y':y, 'color': color}, function(error){
+            return new Promise((resolve, reject) => {
+                 self.socket.emit('newLiveCell',{'x':x, 'y':y, 'color': color}, (error) => {
 
                     if(error){
                         reject (error);
