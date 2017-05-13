@@ -58,7 +58,7 @@ require([
         "isActive": false
       },
       {
-        "itemName": "TAOD", 
+        "itemName": "Toad", 
         "click": function(){
           GameBoard.getInstance().setSelectPattern(GameBoard.PATTERN.TOAD);
         }, 
