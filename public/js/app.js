@@ -28,10 +28,11 @@ require.config({
 
 require([
     'vue',
+    'lodash',
     'js/ui_component/game-cell',
     'js/game_object/game-board',
     'js/service/sync-service'
-], function(Vue, GameCell, GameBoard, SyncService){
+], function(Vue, _, GameCell, GameBoard, SyncService){
 
     SyncService.getInstance().connect().then(function(gameData){
       var board = GameBoard.getInstance(gameData.data, gameData.color);
@@ -39,7 +40,7 @@ require([
       var gameBoard = new Vue({
         el: '#gameBoard',
         components: ['game-cell'],
-          data: {
+        data: {
           board: GameBoard.getInstance().getBoardData()
         }
       });
@@ -47,6 +48,12 @@ require([
       SyncService.getInstance().subscribe("updateWorld", function(data){
         GameBoard.getInstance().updateWorld(data);
       });
+
+      SyncService.getInstance().subscribe("updatePoints", function(data){
+        _.each(data, function(cell){
+          GameBoard.getInstance().paintPoint(cell.x,cell.y,cell.color);
+        });
+      })
     });
 
 });

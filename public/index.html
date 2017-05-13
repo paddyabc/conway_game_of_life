@@ -4,13 +4,21 @@
       data-require="require.js@*" 
       data-semver="2.3.3" 
       src="./js/bower_components/requirejs/require.js"></script>
+    <link href="./css/style.css" rel="stylesheet">
 
 </head>
 <body>
-<div id="gameBoard" >
-    <svg width="1050px" height="525px">
+<div id="gameBoard" style="width:1002px; margin:0 auto">
+    <div class="menu">
+        <div class="menu-desc">Select Pattern:</div>
+        <div class="pattern active">None</div>
+        <div class="pattern">Block</div>
+        <div class="pattern">Boat</div>
+        <div class="pattern">Tub</div>
+        <div class="pattern">Blinker</div>
+    </div>
+    <svg width="1002px" height="525px">
         <g class="row" v-for="(rows, rowIndex) in board">
-            <!--<rect class="square" v-for="cell in rows" v-bind:x="cell.x" v-bind:y="cell.y" v-bind:width="cell.width" v-bind:height="cell.height" v-bind:style="cell.cellStyle"></rect>-->
             <game-cell v-for="(cell, cellIndex) in rows" v-bind:x="cell.x" v-bind:y="cell.y" v-bind:width="cell.width" v-bind:height="cell.height" v-bind:style="cell.cellStyle" v-bind:row-index="rowIndex" v-bind:cell-index="cellIndex"></game-cell>
         </g>
 

@@ -1,7 +1,6 @@
 var HttpService = require('./service/http-service');
 var SocketService = require('./service/socket-service');
 var TimerService = require('./service/timer-service');
-var gameBoard = require('./game-board');
 
 module.exports.run = function(worker) {
     var httpServer = worker.httpServer;

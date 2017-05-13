@@ -1,0 +1,22 @@
+.pattern {
+    display: inline-block;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.pattern.active {
+    background-color: #516c82;
+    color: #FFF;
+}
+
+.menu {
+    width: 100%;
+    background-color: #6fbcfc;
+    border-radius: 3px;
+    margin-bottom: 3px;
+}
+
+.menu-desc{
+	padding: 10px 5px;
+	display: inline-block;
+}

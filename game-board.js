@@ -234,7 +234,6 @@ class GameBoard {
             self.data[x][y].cellStyle.fill = colorTemplate({'red':color.red, 'green':color.green, 'blue':color.blue});
             self.selectedPoint[x+'_'+y] = color;
 
-            //SocketService.getInstance().publishMessage("updateWorld", self.data);
 
             return;
         });

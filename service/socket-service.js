@@ -14,6 +14,7 @@ class SocketService {
     init (scServer){
         this.scServer = scServer;
         var gameBoard = GameBoard.getInstance();
+        let self = this;
 
         //prevent the malicious client use the preserved publish channel
         scServer.addMiddleware(scServer.MIDDLEWARE_PUBLISH_IN, function (req, next) {
@@ -29,7 +30,7 @@ class SocketService {
 
         scServer.on('connection', function(socket){
            
-            let self = this;
+            
             let connectMessage = {"data": gameBoard.getGameData(), "color": gameBoard.pickColor()};
             socket.emit('init',connectMessage);
             
@@ -38,12 +39,13 @@ class SocketService {
                 gameBoard.updateCell(data.x,data.y,data.color).then(function(error){
 
                     if(error){
-                        var message = {"code": -1, "message": error.message, data: data};
+                        let message = {"code": -1, "message": error.message, data: data};
                         response(-1, message);
                     }else {
                         response(null, {"code":0, "message": "success"});
                     }
 
+                    self.publishMessage("updatePoints", [{"x":data.x, "y":data.y, "color":data.color}]);
                 });
                 
             });

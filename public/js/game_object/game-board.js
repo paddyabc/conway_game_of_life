@@ -45,19 +45,25 @@ define(['lodash', '../service/sync-service'], function(_, SyncService){
         paintSelfPoint(x,y){
             
             let self = this;
-            this.gamedata[x][y].isDead = false;
-            this.gamedata[x][y].cellStyle.fill = colorTemplate({'red':this.color.red, 'green':this.color.green, 'blue':this.color.blue});
 
-            SyncService.getInstance().newLiveCell(x,y, this.color).catch(function(err){
-                console.error(err);
-                self.gamedata[x][y].isDead = true;
-                self.gamedata[x][y].cellStyle.fill ="#fff";
-                alert('Cannot select the cell, please choose the other');
-            });
+            if(this.gamedata[x][y].isDead) {
+                this.gamedata[x][y].isDead = false;
+                this.gamedata[x][y].cellStyle.fill = colorTemplate({'red':this.color.red, 'green':this.color.green, 'blue':this.color.blue});
+
+                SyncService.getInstance().newLiveCell(x,y, this.color).catch(function(err){
+                    console.error(err);
+                    self.gamedata[x][y].isDead = true;
+                    self.gamedata[x][y].cellStyle.fill ="#fff";
+                    alert('Cannot select the cell, please choose the other');
+                });
+            } else {
+                alert('The cell cannot be chosen!');
+            }
         }
 
-        paintPoint(){
-
+        paintPoint(x,y,color){
+            this.gamedata[x][y].isDead = false;
+            this.gamedata[x][y].cellStyle.fill = colorTemplate({'red':color.red, 'green':color.green, 'blue':color.blue});
         }
 
         getBoardData(){
