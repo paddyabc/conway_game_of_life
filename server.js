@@ -2,6 +2,7 @@
 
 var SocketCluster = require('socketcluster').SocketCluster;
 
+
 var socketCluster = new SocketCluster({
   workers: 1, // Number of worker processes
   brokers: 1, // Number of broker processes
@@ -24,3 +25,5 @@ var socketCluster = new SocketCluster({
   // Whether or not to reboot the worker in case it crashes (defaults to true)
   rebootWorkerOnCrash: true
 });
+
+

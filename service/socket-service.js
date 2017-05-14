@@ -10,12 +10,14 @@ class SocketService {
         if(_singleton !== _token){
             throw new Error('Cannot instantiate directly.');
         }
+        this.isStart = false;
     }
 
     init (scServer){
         this.scServer = scServer;
         var gameBoard = GameBoard.getInstance();
         let self = this;
+        this.isStart = true;
 
         //prevent the malicious client use the preserved publish channel
         scServer.addMiddleware(scServer.MIDDLEWARE_PUBLISH_IN, (req, next) => {
@@ -31,7 +33,6 @@ class SocketService {
 
         scServer.on('connection', (socket) => {
            
-            
             let connectMessage = {"data": gameBoard.getGameData(), "color": gameBoard.pickColor()};
             socket.emit('init',connectMessage);
             
@@ -54,7 +55,8 @@ class SocketService {
     }
 
     publishMessage(channelName, data){
-        this.scServer.exchange.publish(channelName, data);
+        if(this.isStart)
+            this.scServer.exchange.publish(channelName, data);
     }
 
     static getInstance() {
