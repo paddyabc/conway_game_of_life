@@ -25,7 +25,7 @@ Go to the project folder and run
 ### To connect to the server
 `http://localhost:8000`  
 
-## Architecure  
+## Architecture  
 The demo project is mainly rely on the structure of the SocketCluster. It can provide Http server as well as the Socket server.
 For a demo purpose, it only uses 1 worker to serve all the jobs (e.g. Gaming logic, Http Server, Socket Server, Timer Server, etc...). The Http server will serve the static content (i.e. html, js, css, etc...) to the client.   
 In the client side, every action by the client will be send to the server through the web socket. The Socket server will send the request to the gaming core for calculating and checking.  
