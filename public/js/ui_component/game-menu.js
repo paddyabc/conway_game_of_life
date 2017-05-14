@@ -1,5 +1,6 @@
 "use strict";
 
+//It is the Vue component to create the menu
 define(['vue','../game_object/game-board','lodash'], (Vue, GameBoard, _) => {
 
 	return Vue.component('game-menu', {

@@ -53,6 +53,7 @@ class GameBoard {
         }
     }
 
+    //Generate the color for each connected user
     pickColor(){
         let red = Math.round((Math.random() *255));
         let green = Math.round((Math.random() *255));
@@ -224,6 +225,7 @@ class GameBoard {
 
             let pointChecker = true;
 
+            //Check whether the requested points are valid
             _.each (data, (position) => {
                 let x = position.x;
                 let y = position.y;
@@ -251,6 +253,8 @@ class GameBoard {
             });
 
             if (pointChecker){
+
+                //paint the point if the check is passed
                 _.each(data, (position) => {
                     let x = position.x;
                     let y = position.y;
@@ -271,6 +275,7 @@ class GameBoard {
         return this.updatePromise;
     }
 
+    //Singleton 
     static getInstance() {
         if(!this.instance){
             this.instance = new GameBoard(_singleton);

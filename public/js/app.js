@@ -1,5 +1,6 @@
 "use strict";
 
+//RequireJS configuration
 require.config({
   baseUrl: "",
   paths: {
@@ -25,6 +26,7 @@ require.config({
 
 });
 
+//RequireJS main function
 require([
     'vue',
     'lodash',
@@ -34,6 +36,7 @@ require([
     'js/service/sync-service'
 ], function(Vue, _, GameCell, GameMenu, GameBoard, SyncService){
 
+    //Menu Item
     var menu = [
 
       {
@@ -74,6 +77,7 @@ require([
 
     ];
 
+    //VueJS binding
     var gameBoard = new Vue({
       el: '#gameBoard',
       components: ['game-cell','game-menu'],
@@ -85,14 +89,15 @@ require([
       }
     });
 
+    //Create the web socket for synchronize the game world
     SyncService.getInstance().connect().then(function(gameData){
 
       GameBoard.getInstance().init(gameData.data, gameData.color);
-
+      //Subscribe the channel to update the gameworld
       SyncService.getInstance().subscribe("updateWorld", function(data){
         GameBoard.getInstance().updateWorld(data);
       });
-
+      //Subscribe the channel to update the others user action
       SyncService.getInstance().subscribe("updatePoints", function(data){
         _.each(data, function(cell){
           GameBoard.getInstance().paintPoint(cell.x,cell.y,cell.color);

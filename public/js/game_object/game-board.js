@@ -5,6 +5,7 @@ define(['lodash', '../service/sync-service'], (_, SyncService) => {
     let _singleton = Symbol();
     let colorTemplate = _.template('rgb(${red},${green},${blue})');
 
+    //Define the available pattern
     const _pattern = {
         NONE: Symbol("NONE"),
         BLOCK: Symbol("BLOCK"),
@@ -13,6 +14,7 @@ define(['lodash', '../service/sync-service'], (_, SyncService) => {
         BLINKER: Symbol("BLINKER")
     };
 
+    //Define the Map for each pattern
     const _patternBuilder = {};
     _patternBuilder[_pattern.NONE] = (x, y) => {
         return [ {"x":x, "y":y} ];
@@ -65,10 +67,12 @@ define(['lodash', '../service/sync-service'], (_, SyncService) => {
 
         }
 
+        //Set the user selected pattern 
         setSelectPattern(pattern) {
             this.selectedPattern = pattern;
         }
 
+        //init the game
         init (gamedata, color){
             let self = this;
             
@@ -82,6 +86,7 @@ define(['lodash', '../service/sync-service'], (_, SyncService) => {
             }
         }
 
+        //reset the game data
         resetData() {
             _.each(this.gamedata, (row) => {
                 _.each(row, (cell) => {
@@ -91,6 +96,7 @@ define(['lodash', '../service/sync-service'], (_, SyncService) => {
             });
         }
 
+        //update the game world to sync with the server
         updateWorld(data){
             let self = this;
             for (let row = 0; row < self.gamedata.length; row++) {
@@ -103,12 +109,14 @@ define(['lodash', '../service/sync-service'], (_, SyncService) => {
             }
         }
 
+        //Paint the pattern
         paintPattern(x,y){
             
             let self = this;
             let patternArray = _patternBuilder[this.selectedPattern](x,y);
             let patternValidCheck = true;
 
+            //Check whether it is valid to display the patter 
             _.each(patternArray, (position) => {
                 let xpos = position.x;
                 let ypos = position.y;
@@ -128,6 +136,7 @@ define(['lodash', '../service/sync-service'], (_, SyncService) => {
 
                 let syncData = new Array();
 
+                //update the current view of the user
                 _.each(patternArray, (position) => {
 
                     let xpos = position.x;
@@ -140,8 +149,10 @@ define(['lodash', '../service/sync-service'], (_, SyncService) => {
                     syncData.push({"x":xpos,"y":ypos,color:self.color});
                 });
 
+                //Send to the server to update the game world
                 SyncService.getInstance().newLiveCell(syncData).catch((err)=>{
                     console.error(err);
+                    //If the server reject the change, rollback the change in the current view and alert the user
                     _.each(patternArray, (position) => {
                         let xpos = position.x;
                         let ypos = position.y;
@@ -156,11 +167,13 @@ define(['lodash', '../service/sync-service'], (_, SyncService) => {
             }
         }
 
+        //paint a point to a specified color
         paintPoint(x,y,color){
             this.gamedata[x][y].isDead = false;
             this.gamedata[x][y].cellStyle.fill = colorTemplate({'red':color.red, 'green':color.green, 'blue':color.blue});
         }
 
+        //return the gameboard data
         getBoardData(){
             return this.gamedata;
         }

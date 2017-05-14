@@ -12,6 +12,7 @@ define(['socketcluster', 'promise'], (SC, Promise) => {
             this.port = window.location.port || 80;
         }
 
+        //Connect to web socket
         connect (){
             let self = this;
             let options = {
@@ -28,12 +29,14 @@ define(['socketcluster', 'promise'], (SC, Promise) => {
             return promise;
         }
 
+        //subscibe the channel
         subscribe (channelName, callback){
             if(this.socket) {
                 this.socket.subscribe(channelName).watch(callback);
             }
         }
         
+        //emit the signal to the sever for the action created by the user
         newLiveCell (updateData){
 
             let self = this;
