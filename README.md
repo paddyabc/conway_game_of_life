@@ -16,7 +16,7 @@ This is the demo program to show the logic of [Conway's game of life](https://en
 
 ### Install dependency  
 Go to the project folder and run  
-`$ npm install`
+`$ npm install`  
 `$ bower install`
 
 ### Run the program  
