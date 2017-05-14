@@ -42,4 +42,5 @@ SocketCluster can support https connection. For demo purpose only, it will not i
 ## Future Improvement   
 Gaming core server should be separated to handle all the change of the game world and using the messaging system to connect all the socket servers.   
 In more advance case, a scheduler server can be setup to trigger the calculation of the change of the world in every second.  
-To support horizontal scalablility, there should have a load balancer in front of the socket servers, so that more user client can be supported to connect.
+To support horizontal scalablility, there should have a load balancer in front of the socket servers, so that more user client can be supported to connect.  
+Test case maybe needed to ensure the basic logic will not be changed when there are new enhancement in the future.

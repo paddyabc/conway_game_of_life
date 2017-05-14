@@ -116,9 +116,9 @@ class GameBoard {
                 var check = self[_reproduceCheck](pos.x, pos.y);
                 if(check){
                     newWorld[pos.x][pos.y].isDead = false;
-                    let red = _.meanBy(check, (color) => {return color.red});
-                    let green = _.meanBy(check, (color) => {return color.green});
-                    let blue = _.meanBy(check, (color) => {return color.blue});
+                    let red = Math.floor(_.meanBy(check, (color) => {return color.red}));
+                    let green = Math.floor(_.meanBy(check, (color) => {return color.green}));
+                    let blue = Math.floor(_.meanBy(check, (color) => {return color.blue}));
                     newWorld[pos.x][pos.y].cellStyle.fill = colorTemplate({'red': red, 'green': green, 'blue': blue});
                     newSelectedPoint[pos.x + '_' + pos.y] = {"red":red, "green": green, "blue": blue};
                 }
