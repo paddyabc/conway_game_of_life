@@ -7,7 +7,7 @@ This is the demo program to show the logic of [Conway's game of life](https://en
 2. SocketCluster (Ref: [http://socketcluster.io](http://socketcluster.io))  
 3. Expressjs (Ref: [http://expressjs.com/](http://expressjs.com/))
 4. Vuejs (Ref: [https://vuejs.org/](https://vuejs.org/))  
-5. bower (Ref: [https://vuejs.org/](https://vuejs.org/))  
+5. bower (Ref: [https://bower.io/](https://bower.io/))  
 
 ## How to start 
 ### Pre-requisite  
